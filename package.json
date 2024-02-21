@@ -1,0 +1,22 @@
+{
+  "name": "midi-explore",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf temp && rm -rf clean",
+    "demux": "tsx src/demux.ts",
+    "process": "tsx src/process.ts",
+    "stats": "tsx src/stats.ts",
+    "test": "tsx src/test.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "tsx": "^4.7.1",
+    "typescript": "^5.3.3",
+    "vitest": "^1.2.2"
+  },
+  "dependencies": {
+    "midi-file": "^1.2.4"
+  }
+}
