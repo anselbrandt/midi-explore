@@ -15,16 +15,7 @@ export const cleanMidi = (midi: midiManager.MidiData) => {
 
 export const cleanTracks = (tracks: midiManager.MidiEvent[][]) =>
   tracks
-    .map((track) =>
-      track
-        .filter(
-          (event) =>
-            event.type !== "sequencerSpecific" &&
-            event.type !== "marker" &&
-            event.type !== "portPrefix"
-        )
-        .filter((event) => !(event.channel === 9))
-    )
+    .map((track) => cleanTrack(track))
     .filter((track) =>
       track.some(
         (event) => event.type === "noteOn" || event.type === "setTempo"
@@ -36,6 +27,16 @@ export const cleanTracks = (tracks: midiManager.MidiEvent[][]) =>
       if (channels.length === 1 && channels[0] !== 0) return false;
       return true;
     });
+
+export const cleanTrack = (track: midiManager.MidiEvent[]) =>
+  track
+    .filter(
+      (event) =>
+        event.type !== "sequencerSpecific" &&
+        event.type !== "marker" &&
+        event.type !== "portPrefix"
+    )
+    .filter((event) => !(event.channel === 9));
 
 export const isDrumTrack = (track: midiManager.MidiEvent[]) =>
   track
