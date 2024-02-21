@@ -16,17 +16,9 @@ export const cleanMidi = (midi: midiManager.MidiData) => {
 export const cleanTracks = (tracks: midiManager.MidiEvent[][]) =>
   tracks
     .map((track) => cleanTrack(track))
-    .filter((track) =>
-      track.some(
-        (event) => event.type === "noteOn" || event.type === "setTempo"
-      )
-    )
+    .filter((track) => isInstrumentOrMeta(track))
     .filter((track) => !isBassTrack(track))
-    .filter((track) => {
-      const channels = trackChannels(track);
-      if (channels.length === 1 && channels[0] !== 0) return false;
-      return true;
-    });
+    .filter((track) => isChannelZero(track));
 
 export const cleanTrack = (track: midiManager.MidiEvent[]) =>
   track
@@ -38,17 +30,6 @@ export const cleanTrack = (track: midiManager.MidiEvent[]) =>
     )
     .filter((event) => !(event.channel === 9));
 
-export const isDrumTrack = (track: midiManager.MidiEvent[]) =>
-  track
-    .filter((event) => event.type === "noteOn")
-    .every((event) => event.type === "noteOn" && event.channel === 9);
-
-export const isBassTrack = (track: midiManager.MidiEvent[]) => {
-  const changes = programChangesList(track) as number[];
-  if ([32, 33, 34, 35, 36, 37, 38, 43].includes(changes[0])) return true;
-  return false;
-};
-
 export const trackChannels = (track: midiManager.MidiEvent[]) => {
   const channels = track
     .map((event) => {
@@ -59,16 +40,16 @@ export const trackChannels = (track: midiManager.MidiEvent[]) => {
   return [...new Set(channels)];
 };
 
-export const programChangesList = (track: midiManager.MidiEvent[]) =>
-  programChanges(track).map(
-    (event) => event.type === "programChange" && event.programNumber
-  );
+export const isMuxed = (track: midiManager.MidiEvent[]) =>
+  trackChannels(track).length > 1;
 
 export const programChanges = (track: midiManager.MidiEvent[]) =>
   track.filter((event) => event.type === "programChange");
 
-export const isMuxed = (track: midiManager.MidiEvent[]) =>
-  trackChannels(track).length > 1;
+export const programChangesList = (track: midiManager.MidiEvent[]) =>
+  programChanges(track).map(
+    (event) => event.type === "programChange" && event.programNumber
+  );
 
 export const isMetaTrack = (track: midiManager.MidiEvent[]) =>
   track.every((event) =>
@@ -89,3 +70,23 @@ export const isMetaTrack = (track: midiManager.MidiEvent[]) =>
       "trackName",
     ].includes(event.type)
   );
+
+export const isDrumTrack = (track: midiManager.MidiEvent[]) =>
+  track
+    .filter((event) => event.type === "noteOn")
+    .every((event) => event.type === "noteOn" && event.channel === 9);
+
+export const isBassTrack = (track: midiManager.MidiEvent[]) => {
+  const changes = programChangesList(track) as number[];
+  if ([32, 33, 34, 35, 36, 37, 38, 43].includes(changes[0])) return true;
+  return false;
+};
+
+export const isInstrumentOrMeta = (track: midiManager.MidiEvent[]) =>
+  track.some((event) => event.type === "noteOn" || event.type === "setTempo");
+
+export const isChannelZero = (track: midiManager.MidiEvent[]) => {
+  const channels = trackChannels(track);
+  if (channels.length === 1 && channels[0] !== 0) return false;
+  return true;
+};
