@@ -15,22 +15,27 @@ import { saveFile, mkdirs } from "./lib/utils";
 
 async function main() {
   await mkdirs(["./temp"]);
-  const file = "A_Nightingale_Sang.mid";
-  const inpath = path.join("./data", file);
-  const input = await fs.readFile(inpath);
-  const parsed = midiManager.parseMidi(input);
-  const clean = cleanMidi(parsed);
+  const dataDir = "./data";
+  const files = ["A_Nightingale_Sang.mid", "Easy_Living_4.mid"];
 
-  const header = parsed.header;
-  const tracks = clean.tracks;
+  for (const file of files) {
+    if (file === ".DS_Store") continue;
+    const inpath = path.join(dataDir, file);
+    const input = await fs.readFile(inpath);
+    const parsed = midiManager.parseMidi(input);
+    const clean = cleanMidi(parsed);
 
-  const newHeader = {
-    format: header.format,
-    numTracks: tracks.length,
-    ticksPerBeat: header.ticksPerBeat,
-  };
+    const header = parsed.header;
+    const tracks = clean.tracks;
 
-  await saveFile(file, newHeader, tracks);
+    const newHeader = {
+      format: header.format,
+      numTracks: tracks.length,
+      ticksPerBeat: header.ticksPerBeat,
+    };
+
+    await saveFile(file, newHeader, tracks);
+  }
 }
 
 main().catch((error) => console.log(error));

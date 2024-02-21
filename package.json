@@ -6,6 +6,7 @@
   "scripts": {
     "clean": "rm -rf temp && rm -rf clean",
     "demux": "tsx src/demux.ts",
+    "json2midi": "tsx src/json2midi.ts",
     "process": "tsx src/process.ts",
     "stats": "tsx src/stats.ts",
     "test": "tsx src/test.ts"
