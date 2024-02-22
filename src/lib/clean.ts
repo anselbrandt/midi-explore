@@ -48,11 +48,15 @@ export const isMuxed = (track: midiManager.MidiEvent[]) =>
 
 export const demuxed = (track: midiManager.MidiEvent[]) => {
   if (!isMuxed(track)) return track;
-  const changes = programChangesList(track);
-  if (changes.length === 0 || (changes.length === 1 && changes[0] === 0))
+  const changes = programChanges(track);
+  if (
+    changes.length === 0 ||
+    (changes.length === 1 && changes[0].programNumber === 0)
+  )
     return track.map((event) =>
       event.channel === 0 || event.channel ? { ...event, channel: 0 } : event
     );
+
   return track;
 };
 
