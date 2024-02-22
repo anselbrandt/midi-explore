@@ -1,7 +1,12 @@
 import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
-import { isMetaTrack, programChanges, trackChannels } from "./lib/clean";
+import {
+  isMetaTrack,
+  programChanges,
+  trackChannels,
+  isMuxed,
+} from "./lib/clean";
 import { mkdirs } from "./lib/utils";
 
 /*
@@ -30,6 +35,7 @@ async function main() {
     for (const i in tracks) {
       const track = tracks[i];
       const isMeta = isMetaTrack(track);
+      const muxed = isMuxed(track);
       const length = track.length;
       const channels = trackChannels(track);
       const changes = programChanges(track).map((event) => ({
@@ -43,6 +49,7 @@ async function main() {
       tracksData.push({
         i,
         isMeta,
+        isMuxed: muxed,
         length,
         channels,
         changes,
