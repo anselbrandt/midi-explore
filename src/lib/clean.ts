@@ -53,7 +53,9 @@ export const demuxed = (track: midiManager.MidiEvent[]) => {
   if (
     changes.length === 0 ||
     (changes.length === 1 && changes[0].programNumber === 0) ||
-    changes.every((event) => event.programNumber === 0) ||
+    changes.every(
+      (event) => event.type === "programChange" && event.programNumber === 0
+    ) ||
     (changes.length === 1 && changes[0].programNumber === 4) ||
     (changes.length === 1 && changes[0].programNumber === 5) ||
     (changes.length === 1 && changes[0].programNumber === 11) ||
@@ -93,24 +95,6 @@ export const overrideChanges = (track: midiManager.MidiEvent[]) =>
 export const isPianoChange = (event) =>
   event.type === "programChange" && event.programNumber === 0;
 
-export const eventsEntries = (track: midiManager.MidiEvent[]) => {
-  const map = new Map();
-  for (const event of track) {
-    if (event.type === "programChange") continue;
-    const channel =
-      event.channel === 0 || event.channel ? event.channel : "meta";
-    const exists = map.has(channel);
-    if (exists) {
-      const prev = map.get(channel);
-      const payload = [...prev, event];
-      map.set(channel, payload);
-    } else {
-      map.set(channel, [event]);
-    }
-  }
-  return [...map];
-};
-
 export const programChanges = (track: midiManager.MidiEvent[]) =>
   track.filter((event) => event.type === "programChange");
 
@@ -118,26 +102,6 @@ export const programChangesList = (track: midiManager.MidiEvent[]) =>
   programChanges(track).map(
     (event) => event.type === "programChange" && event.programNumber
   );
-export const changesMap = (track: midiManager.MidiEvent[]) => {
-  const changes = programChanges(track);
-
-  const map = new Map();
-
-  for (const event of changes) {
-    const channel =
-      event.channel === 0 || event.channel > 0 ? event.channel : "meta";
-    const exists = map.has(channel);
-    if (exists) {
-      const prev = map.get(channel);
-      const payload = [...prev, event.programNumber];
-      map.set(channel, payload);
-    } else {
-      map.set(channel, [event.programNumber]);
-    }
-  }
-
-  return Object.fromEntries([...map]);
-};
 
 export const isMetaTrack = (track: midiManager.MidiEvent[]) =>
   track.every((event) =>
