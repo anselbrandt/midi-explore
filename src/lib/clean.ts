@@ -49,11 +49,18 @@ export const isMuxed = (track: midiManager.MidiEvent[]) =>
 export const demuxed = (track: midiManager.MidiEvent[]) => {
   if (!isMuxed(track)) return track;
   const changes = programChanges(track);
+
   if (
     changes.length === 0 ||
     (changes.length === 1 && changes[0].programNumber === 0) ||
+    changes.every((event) => event.programNumber === 0) ||
+    (changes.length === 1 && changes[0].programNumber === 4) ||
+    (changes.length === 1 && changes[0].programNumber === 5) ||
+    (changes.length === 1 && changes[0].programNumber === 11) ||
+    (changes.length === 1 && changes[0].programNumber === 12) ||
     (changes.length === 1 && changes[0].programNumber === 24) ||
-    changes.every((event) => event.programNumber === 0)
+    (changes.length === 1 && changes[0].programNumber === 71) ||
+    (changes.length === 1 && changes[0].programNumber === 75)
   )
     return remapped(track);
 

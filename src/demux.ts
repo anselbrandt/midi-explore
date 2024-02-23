@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { cleanMidi, isMuxed } from "./lib/clean";
+import { cleanMidi, isMuxed, programChanges } from "./lib/clean";
 import { saveFile, mkdirs } from "./lib/utils";
 
 /*
@@ -34,8 +34,12 @@ async function main() {
       ticksPerBeat: header.ticksPerBeat,
     };
 
-    if (tracks.some((track) => isMuxed(track)))
-      await saveFile(file, newHeader, tracks);
+    if (tracks.some((track) => isMuxed(track))) {
+      for (const track of tracks) {
+        const changes = programChanges(track);
+        if (changes.length > 1) await saveFile(file, newHeader, tracks);
+      }
+    }
   }
 }
 
