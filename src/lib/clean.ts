@@ -51,17 +51,10 @@ export const demuxed = (track: midiManager.MidiEvent[]) => {
   const changes = programChanges(track);
   if (
     changes.length === 0 ||
-    (changes.length === 1 && changes[0].programNumber === 0)
+    (changes.length === 1 && changes[0].programNumber === 0) ||
+    (changes.length === 1 && changes[0].programNumber === 24) ||
+    changes.every((event) => event.programNumber === 0)
   )
-    return remapped(track);
-
-  if (
-    changes.length === 0 ||
-    (changes.length === 1 && changes[0].programNumber === 24)
-  )
-    return remapped(track);
-
-  if (changes.every((event) => event.programNumber === 0))
     return remapped(track);
 
   return track;
