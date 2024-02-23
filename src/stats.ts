@@ -57,6 +57,7 @@ async function main() {
     }
     filesData.push({
       file,
+      format: parsed.header.format,
       trackCount: tracksData.length,
       tracks: tracksData,
     });
