@@ -90,6 +90,9 @@ export const overrideChanges = (track: midiManager.MidiEvent[]) =>
     return event;
   });
 
+export const isPianoChange = (event) =>
+  event.type === "programChange" && event.programNumber === 0;
+
 export const eventsEntries = (track: midiManager.MidiEvent[]) => {
   const map = new Map();
   for (const event of track) {

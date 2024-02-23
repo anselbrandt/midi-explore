@@ -15,8 +15,8 @@ import { saveFile, mkdirs } from "./lib/utils";
 
 async function main() {
   await mkdirs(["./temp"]);
-  const dataDir = "./data";
-  const files = ["A_Nightingale_Sang.mid", "Easy_Living_4.mid"];
+  const dataDir = "./muxed";
+  const files = await fs.readdir(dataDir);
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
