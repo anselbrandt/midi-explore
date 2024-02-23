@@ -64,6 +64,8 @@ export const demuxed = (track: midiManager.MidiEvent[]) => {
   )
     return remapped(track);
 
+  if (changes.length > 1) return overrideChanges(track);
+
   return track;
 };
 
@@ -74,6 +76,18 @@ export const remapped = (track: midiManager.MidiEvent[]) =>
     return event.channel === 0 || event.channel
       ? { ...event, channel: 0 }
       : event;
+  });
+
+export const overrideChanges = (track: midiManager.MidiEvent[]) =>
+  track.map((event) => {
+    if (!event.type) return event;
+    if (event.type !== "programChange") return event;
+    if (
+      event.type === "programChange" &&
+      [0, 4, 11, 12, 40, 57].includes(event.programNumber)
+    )
+      return { ...event, programNumber: 0 };
+    return event;
   });
 
 export const eventsEntries = (track: midiManager.MidiEvent[]) => {

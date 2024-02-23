@@ -24,6 +24,8 @@ async function main() {
 
   const filesData = [];
 
+  const set = new Set();
+
   for (const file of files) {
     if (file === ".DS_Store") continue;
     if (file.includes(".json")) continue;
@@ -42,6 +44,10 @@ async function main() {
         channel: event.channel,
         programNumber: event.programNumber,
       }));
+
+      for (const change of changes) {
+        set.add(change.programNumber);
+      }
 
       if (channels.length || changes.length)
         console.log(file, channels, changes);
@@ -63,6 +69,7 @@ async function main() {
     });
   }
   await fs.writeFile("./out/fileStats.json", JSON.stringify(filesData));
+  console.log([...set]);
 }
 
 main().catch((error) => console.log(error));
