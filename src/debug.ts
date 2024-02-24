@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { cleanMidi } from "./lib/clean";
+import { cleanMidi, isMuxed } from "./lib/clean";
 import { saveFile, mkdirs } from "./lib/utils";
 
 /*
@@ -17,8 +17,6 @@ async function main() {
   await mkdirs(["./temp"]);
   const dataDir = "./data";
   const files = await fs.readdir(dataDir);
-
-  const set = new Set();
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
@@ -36,9 +34,10 @@ async function main() {
       ticksPerBeat: header.ticksPerBeat,
     };
 
-    await saveFile(file, newHeader, tracks);
+    if (tracks.some((track) => isMuxed(track))) {
+      await saveFile(file, newHeader, tracks);
+    }
   }
-  console.log([...set]);
 }
 
 main().catch((error) => console.log(error));

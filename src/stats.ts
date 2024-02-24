@@ -50,9 +50,6 @@ async function main() {
         set.add(change.programNumber);
       }
 
-      if (channels.length || changes.length)
-        console.log(file, channels, changes);
-
       tracksData.push({
         i,
         isMeta,
@@ -70,7 +67,7 @@ async function main() {
     });
   }
   await fs.writeFile("./out/fileStats.json", JSON.stringify(filesData));
-  console.log([...set]);
+  console.log("programChanges", [...set]);
 }
 
 main().catch((error) => console.log(error));
