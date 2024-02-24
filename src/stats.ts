@@ -1,11 +1,12 @@
 import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
+
 import {
   isMetaTrack,
+  isMuxed,
   programChanges,
   trackChannels,
-  isMuxed,
 } from "./lib/clean";
 import { mkdirs } from "./lib/utils";
 

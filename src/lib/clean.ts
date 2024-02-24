@@ -28,7 +28,10 @@ export const cleanTrack = (track: midiManager.MidiEvent[]) => {
         event.type !== "marker" &&
         event.type !== "portPrefix"
     )
-    .filter((event) => !(event.channel === 9));
+    .filter((event) => !(event.channel === 9))
+    .filter((event) =>
+      event.type === "programChange" && event.programNumber === 0 ? false : true
+    );
 
   return isMuxed(clean) ? demuxed(clean) : clean;
 };

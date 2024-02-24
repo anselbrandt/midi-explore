@@ -15,8 +15,10 @@ import { saveFile, mkdirs } from "./lib/utils";
 
 async function main() {
   await mkdirs(["./temp"]);
-  const dataDir = "./muxed";
+  const dataDir = "./data";
   const files = await fs.readdir(dataDir);
+
+  const set = new Set();
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
@@ -36,6 +38,7 @@ async function main() {
 
     await saveFile(file, newHeader, tracks);
   }
+  console.log([...set]);
 }
 
 main().catch((error) => console.log(error));
