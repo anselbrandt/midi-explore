@@ -119,21 +119,35 @@ export const totalRunningMs = (midi: midiManager.MidiData) => {
   let microsecondsPerBeat = 0;
   let totalMs = 0;
 
+  let numerator = 4;
+  let beatCount = 0;
+
   for (const event of relTimeMerged) {
     if (event.type === "setTempo")
       microsecondsPerBeat = event.microsecondsPerBeat;
+    if (event.type === "timeSignature") numerator = event.numerator;
     const ticks = event.deltaTime;
     const beats = ticks / ticksPerBeat!;
+    beatCount = beatCount + beats;
     const elapsedMs = microsecondsPerBeat * beats;
     totalMs = totalMs + elapsedMs;
   }
 
-  return totalMs;
+  const roundedBeatCount = Math.ceil(beatCount / numerator) * numerator;
+  const beatPadding = roundedBeatCount - beatCount;
+  const msPadding = microsecondsPerBeat * beatPadding;
+
+  return totalMs + msPadding;
 };
 
-export const msToMinSec = (ms: number) => {
-  const seconds = ms / 1000000;
-  const mm = Math.floor(seconds / 60);
-  const ss = Math.floor(seconds % 60);
-  return `${mm}:${ss}`;
+export const msToTimecode = (ms: number) => {
+  const fps = 30;
+  let frames = (((ms / 1000000) * fps) % fps).toFixed(2);
+  let seconds = Math.floor((ms / 1000000) % 60);
+  let minutes = Math.floor((ms / (1000000 * 60)) % 60);
+  let hours = Math.floor((ms / (1000000 * 60 * 60)) % 24);
+
+  return `${pad(hours)}:${pad(minutes)}:${pad(seconds)}:${pad(frames)}`;
 };
+
+export const pad = (num: number | string) => (+num < 10 ? `0${num}` : num);

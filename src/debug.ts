@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { saveFile, mkdirs, totalRunningMs, msToMinSec } from "./lib/utils";
+import { saveFile, mkdirs, totalRunningMs, msToTimecode } from "./lib/utils";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -15,8 +15,8 @@ import { saveFile, mkdirs, totalRunningMs, msToMinSec } from "./lib/utils";
 async function main() {
   await mkdirs(["./temp"]);
   const dataDir = "./data";
-  const files = await fs.readdir(dataDir);
-  // const files = ["A_Nightingale_Sang.mid"];
+  // const files = await fs.readdir(dataDir);
+  const files = ["A_Nightingale_Sang.mid"];
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
@@ -30,7 +30,7 @@ async function main() {
     );
 
     const totalMs = totalRunningMs(parsed);
-    const runningTime = msToMinSec(totalMs);
+    const runningTime = msToTimecode(totalMs);
 
     console.log(file, runningTime);
 
