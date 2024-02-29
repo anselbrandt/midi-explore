@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { saveFile, mkdirs } from "./lib/utils";
+import { mkdirs } from "./lib/utils";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -14,26 +14,18 @@ import { saveFile, mkdirs } from "./lib/utils";
 
 async function main() {
   await mkdirs(["./temp"]);
-  const dataDir = "./data";
+  const dataDir = "./out";
   const files = await fs.readdir(dataDir);
-  // const files = ["A_Nightingale_Sang.mid"];
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
+    if (file.includes(".json")) continue;
     const inpath = path.join(dataDir, file);
     const input = await fs.readFile(inpath);
     const parsed = midiManager.parseMidi(input);
 
-    const header = parsed.header;
-    const tracks = parsed.tracks;
-
-    const newHeader = {
-      format: header.format,
-      numTracks: tracks.length,
-      ticksPerBeat: header.ticksPerBeat,
-    };
-
-    await saveFile(file, newHeader, tracks);
+    const outpath = path.join("./temp", file.replace(".mid", ".json"));
+    await fs.writeFile(outpath, JSON.stringify(parsed));
   }
 }
 

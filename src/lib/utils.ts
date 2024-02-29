@@ -66,3 +66,32 @@ export const jsonToMidi = async (
   const outputBuffer = Buffer.from(output);
   await fs.writeFile(midipath, outputBuffer);
 };
+
+export const withAbsTime = (tracks: midiManager.MidiEvent[][]) =>
+  tracks.map((track) => {
+    let time = 0;
+    return track.map((event) => {
+      time = time + event.deltaTime;
+      return { ...event, absTime: time };
+    });
+  });
+
+type EventWithAbsTime = midiManager.MidiEvent & {
+  absTime: number;
+};
+
+export const toRelTime = (
+  tracks: EventWithAbsTime[][]
+): midiManager.MidiEvent[][] =>
+  tracks.map((track) => {
+    let prev = 0;
+    return track.map((event) => {
+      const { absTime, ...rest } = event;
+      const relTime = absTime - prev;
+      prev = absTime;
+      return {
+        ...rest,
+        deltaTime: relTime,
+      };
+    });
+  });

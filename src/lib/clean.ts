@@ -150,3 +150,13 @@ export const isChannelZero = (track: midiManager.MidiEvent[]) => {
   if (channels.length === 1 && channels[0] !== 0) return false;
   return true;
 };
+
+export const trackTempos = (tracks: midiManager.MidiEvent[][]) => {
+  const tempos = [];
+  for (const track of tracks) {
+    for (const event of track) {
+      if (event.type === "setTempo") tempos.push(event);
+    }
+  }
+  return tempos;
+};
