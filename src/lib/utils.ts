@@ -67,31 +67,73 @@ export const jsonToMidi = async (
   await fs.writeFile(midipath, outputBuffer);
 };
 
-export const withAbsTime = (tracks: midiManager.MidiEvent[][]) =>
-  tracks.map((track) => {
-    let time = 0;
-    return track.map((event) => {
-      time = time + event.deltaTime;
-      return { ...event, absTime: time };
-    });
-  });
+export const tracksWithAbsTime = (
+  tracks: midiManager.MidiEvent[][]
+): MidiEventWithAbsTime[][] => tracks.map((track) => withAbsTime(track));
 
-type EventWithAbsTime = midiManager.MidiEvent & {
+export const withAbsTime = (
+  track: midiManager.MidiEvent[]
+): MidiEventWithAbsTime[] => {
+  let time = 0;
+  return track.map((event) => {
+    time = time + event.deltaTime;
+    return { ...event, absTime: time };
+  });
+};
+
+type MidiEventWithAbsTime = midiManager.MidiEvent & {
   absTime: number;
 };
 
+export const tracksToRelTime = (
+  tracks: MidiEventWithAbsTime[][]
+): midiManager.MidiEvent[][] => tracks.map((track) => toRelTime(track));
+
 export const toRelTime = (
-  tracks: EventWithAbsTime[][]
-): midiManager.MidiEvent[][] =>
-  tracks.map((track) => {
-    let prev = 0;
-    return track.map((event) => {
-      const { absTime, ...rest } = event;
-      const relTime = absTime - prev;
-      prev = absTime;
-      return {
-        ...rest,
-        deltaTime: relTime,
-      };
-    });
+  track: MidiEventWithAbsTime[]
+): midiManager.MidiEvent[] => {
+  let prev = 0;
+  return track.map((event) => {
+    const { absTime, ...rest } = event;
+    const relTime = absTime - prev;
+    prev = absTime;
+    return {
+      ...rest,
+      deltaTime: relTime,
+    };
   });
+};
+
+export const totalRunningMs = (midi: midiManager.MidiData) => {
+  const header = midi.header;
+  const tracks = midi.tracks;
+
+  const absTimeMerged = tracksWithAbsTime(tracks)
+    .flat()
+    .sort((a, b) => a.absTime - b.absTime);
+
+  const relTimeMerged = toRelTime(absTimeMerged);
+
+  const ticksPerBeat = header.ticksPerBeat;
+
+  let microsecondsPerBeat = 0;
+  let totalMs = 0;
+
+  for (const event of relTimeMerged) {
+    if (event.type === "setTempo")
+      microsecondsPerBeat = event.microsecondsPerBeat;
+    const ticks = event.deltaTime;
+    const beats = ticks / ticksPerBeat!;
+    const elapsedMs = microsecondsPerBeat * beats;
+    totalMs = totalMs + elapsedMs;
+  }
+
+  return totalMs;
+};
+
+export const msToMinSec = (ms: number) => {
+  const seconds = ms / 1000000;
+  const mm = Math.floor(seconds / 60);
+  const ss = Math.floor(seconds % 60);
+  return `${mm}:${ss}`;
+};
