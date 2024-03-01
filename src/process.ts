@@ -17,7 +17,6 @@ async function main() {
   await mkdirs(["./temp"]);
   const dataDir = "./data";
   const files = await fs.readdir(dataDir);
-  // const files = ["A_Nightingale_Sang.mid"];
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
