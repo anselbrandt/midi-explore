@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { saveFile, mkdirs, totalRunningMs, msToTimecode } from "./lib/utils";
+import { saveFile, mkdirs, totalRunningTime, msToTimecode } from "./lib/utils";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -29,10 +29,9 @@ async function main() {
       track.filter((event) => !(event.type === "smpteOffset"))
     );
 
-    const totalMs = totalRunningMs(parsed);
-    const runningTime = msToTimecode(totalMs);
+    const totalLength = totalRunningTime(parsed);
 
-    console.log(file, runningTime);
+    console.log(file, totalLength);
 
     const newHeader = {
       format: header.format,

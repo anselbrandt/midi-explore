@@ -104,7 +104,7 @@ export const toRelTime = (
   });
 };
 
-export const totalRunningMs = (midi: midiManager.MidiData) => {
+export const totalRunningTime = (midi: midiManager.MidiData) => {
   const header = midi.header;
   const tracks = midi.tracks;
 
@@ -142,7 +142,7 @@ export const totalRunningMs = (midi: midiManager.MidiData) => {
   const padding =
     ((expectedTicks - totalTicks) / ticksPerBeat!) * microsecondsPerBeat;
 
-  return totalMs + padding;
+  return { time: msToTimecode(totalMs + padding), bars: roundedBarCount };
 };
 
 export const msToTimecode = (ms: number) => {
