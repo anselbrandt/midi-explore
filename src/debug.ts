@@ -2,7 +2,8 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { saveFile, mkdirs, totalRunningTime, msToTimecode } from "./lib/utils";
+import { saveFile, mkdirs, totalRunningTime } from "./lib/utils";
+import { cleanTracks, isMuxed } from "./lib/clean";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -15,8 +16,8 @@ import { saveFile, mkdirs, totalRunningTime, msToTimecode } from "./lib/utils";
 async function main() {
   await mkdirs(["./temp"]);
   const dataDir = "./data";
-  // const files = await fs.readdir(dataDir);
-  const files = ["A_Nightingale_Sang.mid"];
+  const files = await fs.readdir(dataDir);
+  // const files = ["A_Nightingale_Sang.mid"];
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
@@ -25,13 +26,9 @@ async function main() {
     const parsed = midiManager.parseMidi(input);
 
     const header = parsed.header;
-    const tracks = parsed.tracks.map((track) =>
-      track.filter((event) => !(event.type === "smpteOffset"))
-    );
+    const tracks = cleanTracks(parsed.tracks);
 
     const totalLength = totalRunningTime(parsed);
-
-    console.log(file, totalLength);
 
     const newHeader = {
       format: header.format,
@@ -39,7 +36,12 @@ async function main() {
       ticksPerBeat: header.ticksPerBeat,
     };
 
-    await saveFile(file, newHeader, tracks);
+    for (const track of tracks) {
+      if (isMuxed(track)) {
+        console.log(file, totalLength);
+        await saveFile(file, newHeader, tracks);
+      }
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 import * as midiManager from "midi-file";
+import { toRelTime, withAbsTime } from "./utils";
 
 // channels
 // [0,8,7,3,1,9,15,2,5,4,6,10,11,12,13,14]
@@ -15,10 +16,12 @@ export const cleanMidi = (midi: midiManager.MidiData) => {
 
 export const cleanTracks = (tracks: midiManager.MidiEvent[][]) =>
   tracks
+    .map((track) => withAbsTime(track))
     .map((track) => cleanTrack(track))
     .filter((track) => isInstrumentOrMeta(track))
     .filter((track) => !isBassTrack(track))
-    .filter((track) => isChannelZero(track));
+    .filter((track) => isChannelZero(track))
+    .map((track) => toRelTime(track));
 
 export const cleanTrack = (track: midiManager.MidiEvent[]) => {
   const clean = track
@@ -26,7 +29,8 @@ export const cleanTrack = (track: midiManager.MidiEvent[]) => {
       (event) =>
         event.type !== "sequencerSpecific" &&
         event.type !== "marker" &&
-        event.type !== "portPrefix"
+        event.type !== "portPrefix" &&
+        event.type !== "smpteOffset"
     )
     .filter((event) => !(event.channel === 9));
 

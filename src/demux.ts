@@ -2,8 +2,8 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { cleanMidi } from "./lib/clean";
-import { saveFile, mkdirs } from "./lib/utils";
+import { saveFile, mkdirs, totalRunningTime } from "./lib/utils";
+import { cleanTracks } from "./lib/clean";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -23,16 +23,19 @@ async function main() {
     const inpath = path.join(dataDir, file);
     const input = await fs.readFile(inpath);
     const parsed = midiManager.parseMidi(input);
-    const clean = cleanMidi(parsed);
 
     const header = parsed.header;
-    const tracks = clean.tracks;
+    const tracks = cleanTracks(parsed.tracks);
+
+    const totalLength = totalRunningTime(parsed);
 
     const newHeader = {
       format: header.format,
       numTracks: tracks.length,
       ticksPerBeat: header.ticksPerBeat,
     };
+
+    console.log(file, totalLength);
 
     await saveFile(file, newHeader, tracks);
   }
