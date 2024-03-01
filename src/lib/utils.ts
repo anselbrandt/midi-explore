@@ -117,31 +117,36 @@ export const totalRunningMs = (midi: midiManager.MidiData) => {
   const ticksPerBeat = header.ticksPerBeat;
 
   let microsecondsPerBeat = 0;
-  let totalMs = 0;
-
   let numerator = 4;
-  let beatCount = 0;
+
+  let totalTicks = 0;
+  let beatCount = 1;
+
+  let totalMs = 0;
 
   for (const event of relTimeMerged) {
     if (event.type === "setTempo")
       microsecondsPerBeat = event.microsecondsPerBeat;
     if (event.type === "timeSignature") numerator = event.numerator;
     const ticks = event.deltaTime;
+    totalTicks = totalTicks + ticks;
     const beats = ticks / ticksPerBeat!;
     beatCount = beatCount + beats;
     const elapsedMs = microsecondsPerBeat * beats;
     totalMs = totalMs + elapsedMs;
   }
 
-  const roundedBeatCount = Math.ceil(beatCount / numerator) * numerator;
-  const beatPadding = roundedBeatCount - beatCount;
-  const msPadding = microsecondsPerBeat * beatPadding;
+  const roundedBeatCount = Math.round(totalTicks / ticksPerBeat!);
+  const roundedBarCount = Math.round(roundedBeatCount / numerator);
+  const expectedTicks = roundedBarCount * numerator * ticksPerBeat!;
+  const padding =
+    ((expectedTicks - totalTicks) / ticksPerBeat!) * microsecondsPerBeat;
 
-  return totalMs + msPadding;
+  return totalMs + padding;
 };
 
 export const msToTimecode = (ms: number) => {
-  const fps = 30;
+  const fps = 24;
   let frames = (((ms / 1000000) * fps) % fps).toFixed(2);
   let seconds = Math.floor((ms / 1000000) % 60);
   let minutes = Math.floor((ms / (1000000 * 60)) % 60);
