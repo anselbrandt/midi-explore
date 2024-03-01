@@ -6,11 +6,10 @@
   "scripts": {
     "clean": "rm -rf temp && rm -rf clean",
     "debug": "tsx src/debug.ts",
-    "demux": "tsx src/demux.ts",
     "json2midi": "tsx src/json2midi.ts",
     "jsonparse": "tsx src/jsonparse.ts",
     "midi2json": "tsx src/midi2json.ts",
-    "process": "tsx src/process.ts",
+    "start": "tsx src/process.ts",
     "stats": "tsx src/stats.ts"
   },
   "devDependencies": {

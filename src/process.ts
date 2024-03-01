@@ -2,8 +2,8 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { cleanMidi } from "./lib/clean";
 import { saveFile, mkdirs } from "./lib/utils";
+import { cleanTracks } from "./lib/clean";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -17,16 +17,16 @@ async function main() {
   await mkdirs(["./temp"]);
   const dataDir = "./data";
   const files = await fs.readdir(dataDir);
+  // const files = ["A_Nightingale_Sang.mid"];
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
     const inpath = path.join(dataDir, file);
     const input = await fs.readFile(inpath);
     const parsed = midiManager.parseMidi(input);
-    const clean = cleanMidi(parsed);
 
     const header = parsed.header;
-    const tracks = clean.tracks;
+    const tracks = cleanTracks(parsed.tracks);
 
     const newHeader = {
       format: header.format,
