@@ -30,9 +30,22 @@ export const cleanTrack = (track: midiManager.MidiEvent[]) => {
         event.type !== "sequencerSpecific" &&
         event.type !== "marker" &&
         event.type !== "portPrefix" &&
-        event.type !== "smpteOffset"
+        event.type !== "smpteOffset" &&
+        event.type !== "sysEx"
     )
-    .filter((event) => !(event.channel === 9));
+    .filter((event) => !(event.channel === 9))
+    .filter(
+      (event) => !(event.type === "controller" && event.controllerType === 0)
+    )
+    .filter(
+      (event) => !(event.type === "controller" && event.controllerType === 32)
+    )
+    .filter(
+      (event) => !(event.type === "controller" && event.controllerType === 7)
+    )
+    .filter(
+      (event) => !(event.type === "controller" && event.controllerType === 10)
+    );
 
   return isMuxed(clean) ? demuxed(clean) : clean;
 };
@@ -70,9 +83,44 @@ export const demuxed = (track: midiManager.MidiEvent[]) => {
   )
     return remapped(track);
 
-  if (changes.length > 1) return overrideChanges(track);
+  const overridden = overrideChanges(track);
+  const filtered = filterMuxed(overridden);
+  return filtered;
+};
 
-  return track;
+export const filterMuxed = (track: midiManager.MidiEvent[]) => {
+  const changes = programChanges(track);
+
+  const map = new Map();
+
+  for (const change of changes) {
+    const channel = change.channel;
+    const exists = map.has(channel);
+    if (exists) {
+      const prev = map.get(channel);
+      const programNumber = change.programNumber;
+      const payload = [...prev, programNumber];
+      map.set(channel, payload);
+    } else {
+      map.set(change.channel, [change.programNumber]);
+    }
+  }
+
+  const filtered = track.filter((event) => {
+    if (event.channel === undefined) return true;
+    if (!map.has(event.channel)) return true;
+    const changes = map.get(event.channel);
+    if (changes.length === 1 && changes[0] === 0) return true;
+    if (
+      changes.some((change) =>
+        [32, 33, 34, 35, 36, 37, 38, 43].includes(change)
+      )
+    )
+      return false;
+    return false;
+  });
+
+  return filtered;
 };
 
 export const remapped = (track: midiManager.MidiEvent[]) =>

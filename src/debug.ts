@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { saveFile, mkdirs, totalRunningTime } from "./lib/utils";
+import { saveFile, mkdirs } from "./lib/utils";
 import { cleanTracks, isMuxed } from "./lib/clean";
 
 /*
@@ -28,8 +28,6 @@ async function main() {
     const header = parsed.header;
     const tracks = cleanTracks(parsed.tracks);
 
-    const totalLength = totalRunningTime(parsed);
-
     const newHeader = {
       format: header.format,
       numTracks: tracks.length,
@@ -38,7 +36,6 @@ async function main() {
 
     for (const track of tracks) {
       if (isMuxed(track)) {
-        console.log(file, totalLength);
         await saveFile(file, newHeader, tracks);
       }
     }
