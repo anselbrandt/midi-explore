@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { saveFile, mkdirs } from "./lib/utils";
+import { mkdirs, saveMidi } from "./lib/utils";
 import { cleanTracks } from "./lib/clean";
 
 /*
@@ -33,7 +33,7 @@ async function main() {
       ticksPerBeat: header.ticksPerBeat,
     };
 
-    await saveFile(file, newHeader, tracks);
+    await saveMidi(file, newHeader, tracks);
   }
 }
 

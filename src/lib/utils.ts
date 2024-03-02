@@ -53,6 +53,20 @@ export const saveFile = async (
   );
 };
 
+export const saveMidi = async (
+  file: string,
+  header: Header,
+  tracks: midiManager.MidiEvent[][]
+) => {
+  const midipath = path.join("./temp", file);
+  const output = midiManager.writeMidi({
+    header,
+    tracks,
+  });
+  const outputBuffer = Buffer.from(output);
+  await fs.writeFile(midipath, outputBuffer);
+};
+
 export const jsonToMidi = async (
   file: string,
   header: Header,
