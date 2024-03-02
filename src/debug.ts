@@ -3,7 +3,7 @@ import path from "path";
 import * as midiManager from "midi-file";
 
 import { saveFile, mkdirs } from "./lib/utils";
-import { cleanTracks, isMuxed } from "./lib/clean";
+import { cleanTracks } from "./lib/clean";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -34,10 +34,8 @@ async function main() {
       ticksPerBeat: header.ticksPerBeat,
     };
 
-    for (const track of tracks) {
-      if (isMuxed(track)) {
-        await saveFile(file, newHeader, tracks);
-      }
+    if (tracks.length > 2) {
+      await saveFile(file, newHeader, tracks);
     }
   }
 }
