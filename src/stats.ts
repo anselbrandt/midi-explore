@@ -8,7 +8,7 @@ import {
   programChanges,
   trackChannels,
 } from "./lib/clean";
-import { mkdirs } from "./lib/utils";
+import { mkdirs, totalRunningTime } from "./lib/utils";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -62,6 +62,7 @@ async function main() {
     filesData.push({
       file,
       format: parsed.header.format,
+      ...totalRunningTime(parsed),
       trackCount: tracksData.length,
       tracks: tracksData,
     });

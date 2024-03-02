@@ -21,7 +21,13 @@ export const cleanTracks = (tracks: midiManager.MidiEvent[][]) =>
     .filter((track) => isInstrumentOrMeta(track))
     .filter((track) => !isBassTrack(track))
     .filter((track) => isChannelZero(track))
+    .map((track) => toPiano(track))
     .map((track) => toRelTime(track));
+
+export const toPiano = (track: midiManager.MidiEvent[]) =>
+  track.map((event) =>
+    event.type === "programChange" ? { ...event, programNumber: 0 } : event
+  );
 
 export const cleanTrack = (track: midiManager.MidiEvent[]) => {
   const clean = track
