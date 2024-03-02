@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { mkdirs, saveMidi } from "./lib/utils";
+import { mkdirs, saveMidi, overwriteFixes } from "./lib/utils";
 import { cleanTracks } from "./lib/clean";
 
 /*
@@ -35,6 +35,8 @@ async function main() {
 
     await saveMidi(file, newHeader, tracks);
   }
+
+  await overwriteFixes();
 }
 
 main().catch((error) => console.log(error));

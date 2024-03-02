@@ -2,8 +2,8 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { saveFile, mkdirs } from "./lib/utils";
-import { cleanTracks } from "./lib/clean";
+import { saveFile, mkdirs, overwriteFixes } from "./lib/utils";
+import { cleanTracks, programChanges } from "./lib/clean";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -17,7 +17,7 @@ async function main() {
   await mkdirs(["./temp"]);
   const dataDir = "./data";
   const files = await fs.readdir(dataDir);
-  // const files = ["A_Nightingale_Sang.mid"];
+  // const files = ["Blackbird(GM).mid"];
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
@@ -34,10 +34,18 @@ async function main() {
       ticksPerBeat: header.ticksPerBeat,
     };
 
-    if (tracks.length > 2) {
-      await saveFile(file, newHeader, tracks);
+    for (const track of tracks) {
+      const changes = programChanges(track);
+      if (changes.length) {
+        if (changes.some((change) => change.programNumber !== 0)) {
+          console.log(file, changes);
+          await saveFile(file, newHeader, tracks);
+        }
+      }
     }
   }
+
+  // await overwriteFixes();
 }
 
 main().catch((error) => console.log(error));

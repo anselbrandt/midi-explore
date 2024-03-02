@@ -1,7 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 
-import { jsonToMidi, mkdirs } from "./lib/utils";
+import { jsonToMidi, mkdirs, totalRunningTime } from "./lib/utils";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -25,6 +25,9 @@ async function main() {
 
     const header = parsed.header;
     const tracks = parsed.tracks;
+
+    const runningTime = totalRunningTime(parsed);
+    console.log(file, runningTime);
 
     await jsonToMidi(file, header, tracks);
   }
