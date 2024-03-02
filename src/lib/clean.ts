@@ -120,7 +120,10 @@ export const filterMuxed = (track: midiManager.MidiEvent[]) => {
     return false;
   });
 
-  return filtered;
+  return filtered.map((event) => {
+    if (event.channel === undefined) return event;
+    return { ...event, channel: 0 };
+  });
 };
 
 export const remapped = (track: midiManager.MidiEvent[]) =>
