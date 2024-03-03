@@ -1,13 +1,7 @@
 {
-  "header": { "format": 1, "numTracks": 2, "ticksPerBeat": 120 },
+  "header": { "format": 1, "numTracks": 1, "ticksPerBeat": 120 },
   "tracks": [
     [
-      {
-        "deltaTime": 0,
-        "meta": true,
-        "type": "trackName",
-        "text": "*Untitled"
-      },
       {
         "deltaTime": 0,
         "meta": true,
@@ -30,10 +24,6 @@
         "type": "setTempo",
         "microsecondsPerBeat": 500000
       },
-      { "deltaTime": 0, "meta": true, "type": "endOfTrack" }
-    ],
-    [
-      { "deltaTime": 0, "meta": true, "type": "trackName", "text": "Track 1" },
       {
         "deltaTime": 0,
         "channel": 0,

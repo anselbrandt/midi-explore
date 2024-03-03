@@ -170,20 +170,3 @@ export const msToTimecode = (ms: number) => {
 };
 
 export const pad = (num: number | string) => (+num < 10 ? `0${num}` : num);
-
-export const overwriteFixes = async () => {
-  console.log("copying manual fixes...");
-
-  const fixesDir = "./manualfixes";
-  const fixes = await fs.readdir(fixesDir);
-  for (const fix of fixes) {
-    if (fix === ".DS_Store") continue;
-    if (fix.includes(".json")) continue;
-
-    const inpath = path.join(fixesDir, fix);
-    const input = await fs.readFile(inpath);
-    const outpath = path.join("./temp", fix);
-
-    await fs.writeFile(outpath, input);
-  }
-};

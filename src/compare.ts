@@ -13,22 +13,25 @@ import { mkdirs, totalRunningTime } from "./lib/utils";
 */
 
 async function main() {
-  await mkdirs(["./temp"]);
-  const dataDir = "./out";
+  await mkdirs(["./out"]);
+  const originalDir = "./data";
+  const dataDir = "./temp";
   const files = await fs.readdir(dataDir);
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
     if (file.includes(".json")) continue;
     const inpath = path.join(dataDir, file);
+    const originalPath = path.join(originalDir, file);
     const input = await fs.readFile(inpath);
+    const originalInput = await fs.readFile(originalPath);
     const parsed = midiManager.parseMidi(input);
+    const originalParsed = midiManager.parseMidi(originalInput);
 
-    const runningTime = totalRunningTime(parsed);
-    console.log(file, runningTime);
-
-    const outpath = path.join("./temp", file.replace(".mid", ".json"));
-    await fs.writeFile(outpath, JSON.stringify(parsed));
+    const original = totalRunningTime(originalParsed);
+    const clean = totalRunningTime(parsed);
+    if (JSON.stringify(original) !== JSON.stringify(clean))
+      console.log({ file, original, "clean ": clean });
   }
 }
 

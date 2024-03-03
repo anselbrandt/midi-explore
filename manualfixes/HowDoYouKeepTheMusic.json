@@ -1,5 +1,5 @@
 {
-  "header": { "format": 1, "numTracks": 2, "ticksPerBeat": 120 },
+  "header": { "format": 1, "numTracks": 1, "ticksPerBeat": 120 },
   "tracks": [
     [
       {
@@ -29,15 +29,6 @@
         "denominator": 4,
         "metronome": 24,
         "thirtyseconds": 8
-      },
-      { "deltaTime": 0, "meta": true, "type": "endOfTrack" }
-    ],
-    [
-      {
-        "deltaTime": 0,
-        "meta": true,
-        "type": "trackName",
-        "text": "Piano solo"
       },
       {
         "deltaTime": 0,

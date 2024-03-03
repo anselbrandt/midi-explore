@@ -1,5 +1,5 @@
 {
-  "header": { "format": 1, "numTracks": 2, "ticksPerBeat": 120 },
+  "header": { "format": 1, "numTracks": 1, "ticksPerBeat": 120 },
   "tracks": [
     [
       {
@@ -29,15 +29,6 @@
         "type": "keySignature",
         "key": -2,
         "scale": 1
-      },
-      { "deltaTime": 0, "meta": true, "type": "endOfTrack" }
-    ],
-    [
-      {
-        "deltaTime": 0,
-        "meta": true,
-        "type": "trackName",
-        "text": "Melody  (BB)\u0000"
       },
       {
         "deltaTime": 3,

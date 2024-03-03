@@ -1,5 +1,5 @@
 {
-  "header": { "format": 1, "numTracks": 2, "ticksPerBeat": 960 },
+  "header": { "format": 1, "numTracks": 1, "ticksPerBeat": 960 },
   "tracks": [
     [
       {
@@ -13,18 +13,6 @@
         "meta": true,
         "type": "text",
         "text": "Johnny Mercer and Harold Arlen"
-      },
-      {
-        "deltaTime": 0,
-        "meta": true,
-        "type": "text",
-        "text": "dougmck@pipeline.com.au. Played in real time.\n"
-      },
-      {
-        "deltaTime": 0,
-        "meta": true,
-        "type": "text",
-        "text": "Accompaniment played first - then second part on Midi Channel 1 2 tracks on separate midi channels so sustain pedal from accompniment does not interfere with the other track.\n"
       },
       {
         "deltaTime": 0,
@@ -47,15 +35,6 @@
         "meta": true,
         "type": "setTempo",
         "microsecondsPerBeat": 600000
-      },
-      { "deltaTime": 0, "meta": true, "type": "endOfTrack" }
-    ],
-    [
-      {
-        "deltaTime": 0,
-        "meta": true,
-        "type": "trackName",
-        "text": "Accompaniment"
       },
       {
         "deltaTime": 0,

@@ -1,5 +1,5 @@
 {
-  "header": { "format": 1, "numTracks": 2, "ticksPerBeat": 480 },
+  "header": { "format": 1, "numTracks": 1, "ticksPerBeat": 480 },
   "tracks": [
     [
       {
@@ -35,22 +35,7 @@
         "type": "setTempo",
         "microsecondsPerBeat": 983607
       },
-      { "deltaTime": 119040, "meta": true, "type": "endOfTrack" }
-    ],
-    [
       { "deltaTime": 0, "meta": true, "type": "channelPrefix", "channel": 0 },
-      {
-        "deltaTime": 0,
-        "meta": true,
-        "type": "trackName",
-        "text": "Acoustic Grand Piano"
-      },
-      {
-        "deltaTime": 0,
-        "meta": true,
-        "type": "instrumentName",
-        "text": "Steinway Grand Piano"
-      },
       {
         "deltaTime": 0,
         "channel": 0,

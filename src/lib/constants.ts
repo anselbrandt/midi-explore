@@ -39,3 +39,15 @@ export const nonChannelEvents = [
   "lyrics",
   "cuePoint",
 ];
+
+export const headerTrackEvents = [
+  "copyrightNotice",
+  "cuePoint",
+  "endOfTrack",
+  "keySignature",
+  "programChange",
+  "setTempo",
+  "text",
+  "timeSignature",
+  "trackName",
+];

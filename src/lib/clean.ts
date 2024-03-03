@@ -14,8 +14,8 @@ export const cleanMidi = (midi: midiManager.MidiData) => {
   return { header, tracks };
 };
 
-export const cleanTracks = (tracks: midiManager.MidiEvent[][]) =>
-  tracks
+export const cleanTracks = (tracks: midiManager.MidiEvent[][]) => {
+  const cleaned = tracks
     .map((track) => withAbsTime(track))
     .map((track) => cleanTrack(track))
     .filter((track) => isInstrumentOrMeta(track))
@@ -23,6 +23,16 @@ export const cleanTracks = (tracks: midiManager.MidiEvent[][]) =>
     .filter((track) => isChannelZero(track))
     .map((track) => toPiano(track))
     .map((track) => toRelTime(track));
+
+  const merged = mergeMeta(cleaned);
+
+  return merged;
+};
+
+export const mergeMeta = (tracks: midiManager.MidiEvent[][]) => {
+  if (tracks.length === 1) return tracks;
+  return tracks;
+};
 
 export const toPiano = (track: midiManager.MidiEvent[]) =>
   track.map((event) =>

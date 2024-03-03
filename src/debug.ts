@@ -2,8 +2,8 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { saveFile, mkdirs, overwriteFixes } from "./lib/utils";
-import { cleanTracks, programChanges } from "./lib/clean";
+import { mkdirs, saveFile } from "./lib/utils";
+import { cleanTracks } from "./lib/clean";
 
 /*
   const input = await fs.readFile("in.mid");
@@ -14,6 +14,10 @@ import { cleanTracks, programChanges } from "./lib/clean";
 */
 
 async function main() {
+  const fixesDir = "./manualfixes";
+  const manualFixes = (await fs.readdir(fixesDir)).filter((file) =>
+    file.includes(".mid")
+  );
   await mkdirs(["./temp"]);
   const dataDir = "./data";
   const files = await fs.readdir(dataDir);
@@ -21,11 +25,14 @@ async function main() {
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
-    const inpath = path.join(dataDir, file);
+    const inpath = manualFixes.includes(file)
+      ? path.join(fixesDir, file)
+      : path.join(dataDir, file);
     const input = await fs.readFile(inpath);
     const parsed = midiManager.parseMidi(input);
 
     const header = parsed.header;
+
     const tracks = cleanTracks(parsed.tracks);
 
     const newHeader = {
@@ -34,18 +41,8 @@ async function main() {
       ticksPerBeat: header.ticksPerBeat,
     };
 
-    for (const track of tracks) {
-      const changes = programChanges(track);
-      if (changes.length) {
-        if (changes.some((change) => change.programNumber !== 0)) {
-          console.log(file, changes);
-          await saveFile(file, newHeader, tracks);
-        }
-      }
-    }
+    await saveFile(file, newHeader, tracks);
   }
-
-  // await overwriteFixes();
 }
 
 main().catch((error) => console.log(error));

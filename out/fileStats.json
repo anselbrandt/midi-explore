@@ -1736,21 +1736,13 @@
     "format": 1,
     "time": "00:01:17:24.00",
     "bars": 39,
-    "trackCount": 2,
+    "trackCount": 1,
     "tracks": [
       {
         "i": "0",
-        "isMeta": true,
-        "isMuxed": false,
-        "length": 5,
-        "channels": [],
-        "changes": []
-      },
-      {
-        "i": "1",
         "isMeta": false,
         "isMuxed": false,
-        "length": 1679,
+        "length": 1682,
         "channels": [0],
         "changes": []
       }
@@ -2336,21 +2328,13 @@
     "format": 1,
     "time": "00:03:15:00.00",
     "bars": 65,
-    "trackCount": 2,
+    "trackCount": 1,
     "tracks": [
       {
         "i": "0",
-        "isMeta": true,
-        "isMuxed": false,
-        "length": 5,
-        "channels": [],
-        "changes": []
-      },
-      {
-        "i": "1",
         "isMeta": false,
         "isMuxed": false,
-        "length": 4060,
+        "length": 4063,
         "channels": [0],
         "changes": []
       }
@@ -2411,21 +2395,13 @@
     "format": 1,
     "time": "00:02:38:09.60",
     "bars": 66,
-    "trackCount": 2,
+    "trackCount": 1,
     "tracks": [
       {
         "i": "0",
-        "isMeta": true,
-        "isMuxed": false,
-        "length": 8,
-        "channels": [],
-        "changes": []
-      },
-      {
-        "i": "1",
         "isMeta": false,
         "isMuxed": false,
-        "length": 2384,
+        "length": 2388,
         "channels": [0],
         "changes": []
       }
@@ -4562,21 +4538,13 @@
     "format": 1,
     "time": "00:02:59:01.14",
     "bars": 47,
-    "trackCount": 2,
+    "trackCount": 1,
     "tracks": [
       {
         "i": "0",
-        "isMeta": true,
-        "isMuxed": false,
-        "length": 5,
-        "channels": [],
-        "changes": []
-      },
-      {
-        "i": "1",
         "isMeta": false,
         "isMuxed": false,
-        "length": 1950,
+        "length": 1953,
         "channels": [0],
         "changes": []
       }
@@ -8449,21 +8417,13 @@
     "format": 1,
     "time": "00:02:22:00.00",
     "bars": 71,
-    "trackCount": 2,
+    "trackCount": 1,
     "tracks": [
       {
         "i": "0",
-        "isMeta": true,
-        "isMuxed": false,
-        "length": 5,
-        "channels": [],
-        "changes": []
-      },
-      {
-        "i": "1",
         "isMeta": false,
         "isMuxed": false,
-        "length": 1919,
+        "length": 1921,
         "channels": [0],
         "changes": []
       }
@@ -11133,23 +11093,15 @@
   {
     "file": "Shiny_Stockings.mid",
     "format": 1,
-    "time": "00:01:59:24.00",
-    "bars": 65,
-    "trackCount": 2,
+    "time": "00:03:59:23.99",
+    "bars": 130,
+    "trackCount": 1,
     "tracks": [
       {
         "i": "0",
-        "isMeta": true,
-        "isMuxed": false,
-        "length": 6,
-        "channels": [],
-        "changes": []
-      },
-      {
-        "i": "1",
         "isMeta": false,
         "isMuxed": false,
-        "length": 3405,
+        "length": 6199,
         "channels": [0],
         "changes": [{ "channel": 0, "programNumber": 0 }]
       }
@@ -11665,21 +11617,13 @@
     "format": 1,
     "time": "00:04:03:22.43",
     "bars": 62,
-    "trackCount": 2,
+    "trackCount": 1,
     "tracks": [
       {
         "i": "0",
-        "isMeta": true,
-        "isMuxed": false,
-        "length": 5,
-        "channels": [],
-        "changes": []
-      },
-      {
-        "i": "1",
         "isMeta": false,
         "isMuxed": false,
-        "length": 4559,
+        "length": 4560,
         "channels": [0],
         "changes": [{ "channel": 0, "programNumber": 0 }]
       }
@@ -11907,21 +11851,13 @@
     "format": 1,
     "time": "00:03:59:24.00",
     "bars": 53,
-    "trackCount": 2,
+    "trackCount": 1,
     "tracks": [
       {
         "i": "0",
-        "isMeta": true,
-        "isMuxed": false,
-        "length": 5,
-        "channels": [],
-        "changes": []
-      },
-      {
-        "i": "1",
         "isMeta": false,
         "isMuxed": false,
-        "length": 3768,
+        "length": 3770,
         "channels": [0],
         "changes": []
       }
@@ -13091,21 +13027,13 @@
     "format": 1,
     "time": "00:02:34:00.71",
     "bars": 43,
-    "trackCount": 2,
+    "trackCount": 1,
     "tracks": [
       {
         "i": "0",
-        "isMeta": true,
-        "isMuxed": false,
-        "length": 5,
-        "channels": [],
-        "changes": []
-      },
-      {
-        "i": "1",
         "isMeta": false,
         "isMuxed": false,
-        "length": 1998,
+        "length": 2001,
         "channels": [0],
         "changes": []
       }
@@ -14708,21 +14636,13 @@
     "format": 1,
     "time": "00:02:51:18.35",
     "bars": 73,
-    "trackCount": 2,
+    "trackCount": 1,
     "tracks": [
       {
         "i": "0",
-        "isMeta": true,
-        "isMuxed": false,
-        "length": 5,
-        "channels": [],
-        "changes": []
-      },
-      {
-        "i": "1",
         "isMeta": false,
         "isMuxed": false,
-        "length": 2755,
+        "length": 2758,
         "channels": [0],
         "changes": [{ "channel": 0, "programNumber": 0 }]
       }

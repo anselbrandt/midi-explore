@@ -2,7 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import * as midiManager from "midi-file";
 
-import { mkdirs, saveMidi, overwriteFixes } from "./lib/utils";
+import { mkdirs, saveMidi } from "./lib/utils";
 import { cleanTracks } from "./lib/clean";
 
 /*
@@ -14,13 +14,19 @@ import { cleanTracks } from "./lib/clean";
 */
 
 async function main() {
+  const fixesDir = "./manualfixes";
+  const manualFixes = (await fs.readdir(fixesDir)).filter((file) =>
+    file.includes(".mid")
+  );
   await mkdirs(["./temp"]);
   const dataDir = "./data";
   const files = await fs.readdir(dataDir);
 
   for (const file of files) {
     if (file === ".DS_Store") continue;
-    const inpath = path.join(dataDir, file);
+    const inpath = manualFixes.includes(file)
+      ? path.join(fixesDir, file)
+      : path.join(dataDir, file);
     const input = await fs.readFile(inpath);
     const parsed = midiManager.parseMidi(input);
 
@@ -35,8 +41,6 @@ async function main() {
 
     await saveMidi(file, newHeader, tracks);
   }
-
-  await overwriteFixes();
 }
 
 main().catch((error) => console.log(error));

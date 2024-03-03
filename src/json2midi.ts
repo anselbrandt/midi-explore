@@ -13,7 +13,7 @@ import { jsonToMidi, mkdirs, totalRunningTime } from "./lib/utils";
 
 async function main() {
   await mkdirs(["./temp"]);
-  const dataDir = "./temp";
+  const dataDir = "./out";
   const files = await fs.readdir(dataDir);
 
   for (const file of files) {
